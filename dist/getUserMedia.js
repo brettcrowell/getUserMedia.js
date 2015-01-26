@@ -1,12 +1,12 @@
 /*!
-* getUserMedia
-* v0.2.0 - 2014-08-16
+* getusermedia-js
+* v0.2.0 - 2015-01-25
 * https://github.com/addyosmani/getUserMedia.js
 * (c) Addy Osmani; MIT License
 */;(function (window, document) {
     "use strict";
 
-    window.getUserMedia = function (options, successCallback, errorCallback) {
+    window.getUserMedia = function (options, successCallback, errorCallback, videoElement) {
 
         // Options are required
         if (options !== undefined) {
@@ -21,7 +21,7 @@
                 // an string (we will try both)
                 var option_object = {};
                 var option_string = '';
-                var getUserMediaOptions, container, temp, video, ow, oh;
+                var getUserMediaOptions, container, video, ow, oh;
 
                 if (options.video === true) {
                     option_object.video = true;
@@ -35,8 +35,12 @@
                     option_string = option_string + 'audio';
                 }
 
-                container = document.getElementById(options.el);
-                temp = document.createElement('video');
+                if(!videoElement){
+
+                    container = document.getElementById(options.el);
+                    videoElement = document.createElement('video');
+
+                }
 
                 // Fix for ratio
                 ow = parseInt(container.offsetWidth, 10);
@@ -48,11 +52,11 @@
                 }
 
                 // configure the interim video
-                temp.width = options.width;
-                temp.height = options.height;
-                temp.autoplay = true;
-                container.appendChild(temp);
-                video = temp;
+                videoElement.width = options.width;
+                videoElement.height = options.height;
+                videoElement.autoplay = true;
+                container.appendChild(videoElement);
+                video = videoElement;
 
                 // referenced for use in your applications
                 options.videoEl = video;
