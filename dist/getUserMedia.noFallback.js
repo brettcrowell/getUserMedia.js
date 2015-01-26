@@ -8,7 +8,7 @@ stripped out, for anyone that wants it*/
 ;(function (window, document) {
     "use strict";
 
-    window.getUserMedia = function (options, successCallback, errorCallback) {
+    window.getUserMedia = function (options, successCallback, errorCallback, videoElement) {
 
         // Options are required
         if (options !== undefined) {
@@ -22,7 +22,7 @@ stripped out, for anyone that wants it*/
                 // an string (we will try both)
                 var option_object = {};
                 var option_string = '';
-                var container, temp, video, ow, oh;
+                var container, video, ow, oh;
 
                 if (options.video === true) {
                     option_object.video = true;
@@ -36,8 +36,12 @@ stripped out, for anyone that wants it*/
                     option_string = option_string + 'audio';
                 }
 
-                container = document.getElementById(options.el);
-                temp = document.createElement('video');
+                if(!videoElement){
+
+                    container = document.getElementById(options.el);
+                    videoElement = document.createElement('video');
+
+                }
 
                 // Fix for ratio
                 ow = parseInt(container.offsetWidth, 10);
@@ -49,11 +53,11 @@ stripped out, for anyone that wants it*/
                 }
 
                 // configure the interim video
-                temp.width = options.width;
-                temp.height = options.height;
-                temp.autoplay = true;
-                container.appendChild(temp);
-                video = temp;
+                videoElement.width = options.width;
+                videoElement.height = options.height;
+                videoElement.autoplay = true;
+                container.appendChild(videoElement);
+                video = videoElement;
 
                 // referenced for use in your applications
                 options.videoEl = video;
